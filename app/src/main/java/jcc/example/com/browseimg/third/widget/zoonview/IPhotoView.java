@@ -29,6 +29,8 @@ public interface IPhotoView {
     public static final float DEFAULT_MIN_SCALE = 1.0f;
     public static final int DEFAULT_ZOOM_DURATION = 200;
 
+    boolean isScaling();
+
     /**
      * Returns true if the PhotoView is set to allow zooming of Photos.
      *
@@ -345,4 +347,11 @@ public interface IPhotoView {
      * @param onScaleChangeListener OnScaleChangeListener instance
      */
     void setOnScaleChangeListener(PhotoViewAttacher.OnScaleChangeListener onScaleChangeListener);
+
+    /**
+     * Will report back about drag
+     *
+     * @param onViewDragListener OnViewDragListener instance
+     */
+    void setOnViewDragListener(PhotoViewAttacher.OnViewDragListener onViewDragListener);
 }

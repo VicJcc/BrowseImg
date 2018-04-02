@@ -30,13 +30,6 @@ public class JImageShowUtil {
                                     final ImageView imageView,
                                     final long uin){
         if(!TextUtils.isEmpty(imgUrl)){
-//            Picasso.with(TLFMApp.getIns().getApplicationContext())
-//                    .load(imgUrl)
-////                    .memoryPolicy(NO_CACHE, NO_STORE)
-//                    .config(Bitmap.Config.RGB_565)
-//                    .placeholder(TLHeadUtil.getDefaultRes(uin))
-//                    .error(TLHeadUtil.getDefaultRes(uin))
-//                    .into(imageView);
             RequestOptions options = new RequestOptions()
                     .centerCrop()
 //                    .placeholder(R.mipmap.ic_launcher)
@@ -73,11 +66,6 @@ public class JImageShowUtil {
 
     public static void displayImage(final String imgUrl, final ImageView imageView){
         if(!TextUtils.isEmpty(imgUrl)){
-//            Picasso.with(TLFMApp.getIns())
-//                    .load(imgUrl)
-////                    .memoryPolicy(NO_CACHE, NO_STORE)
-//                    .config(Bitmap.Config.RGB_565)
-//                    .into(imageView);
 
             RequestOptions options = new RequestOptions()
                     .centerCrop()
@@ -139,9 +127,6 @@ public class JImageShowUtil {
     public static void displayImage(final String imgUrl, final ImageView imageView, final RequestListener<Drawable> callback){
         if(!TextUtils.isEmpty(imgUrl)){
             RequestOptions options = new RequestOptions()
-//                    .centerCrop()
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .error(R.mipmap.ic_launcher)
                     .priority(Priority.NORMAL);
             Glide.with(JApp.getIns())
                     .load(imgUrl)
@@ -151,40 +136,6 @@ public class JImageShowUtil {
         }
     }
 
-//    public static void displayImage(final String imgUrl,
-//                                    @DrawableRes int placeId,
-//                                    @DrawableRes int errorId,
-//                                    final Target target){
-//        if(!TextUtils.isEmpty(imgUrl)){
-//            RequestCreator creator =
-//            Picasso.with(TLFMApp.getIns())
-//                    .load(imgUrl)
-////                    .memoryPolicy(NO_CACHE, NO_STORE)
-//                    .config(Bitmap.Config.RGB_565);
-//            if(placeId != 0){
-//                creator.placeholder(placeId);
-//            }
-//            if(errorId != 0){
-//                creator.error(errorId);
-//            }
-//            creator.into(target);
-//        }
-//    }
-
-//    public static void loadImage(final String imgUrl,
-//                                    final Target target){
-//        if(!TextUtils.isEmpty(imgUrl)){
-//            RequestCreator creator =
-//            Picasso.with(TLFMApp.getIns())
-//                    .load(imgUrl)
-////                    .memoryPolicy(NO_CACHE, NO_STORE)
-//                    .config(Bitmap.Config.RGB_565);
-//            creator.into(target);
-//            Glide.with(TLFMApp.getIns())
-//                    .load(imgUrl)
-//                    .into(target);
-//        }
-//    }
 
     /**
      * 预加载网络图片.
@@ -192,22 +143,6 @@ public class JImageShowUtil {
      */
     public static void preLoadImage(final String imgUrl){
         if(!TextUtils.isEmpty(imgUrl)){
-//            RequestCreator creator = Picasso.with(TLFMApp.getIns())
-//                    .load(imgUrl)
-//                    .config(Bitmap.Config.RGB_565);
-//            creator.into(new Target() {
-//                @Override
-//                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                }
-//
-//                @Override
-//                public void onBitmapFailed(Drawable errorDrawable) {
-//                }
-//
-//                @Override
-//                public void onPrepareLoad(Drawable placeHolderDrawable) {
-//                }
-//            });
             Glide.with(JApp.getIns())
                     .load(imgUrl)
                     .preload();
@@ -254,9 +189,6 @@ public class JImageShowUtil {
     public static void displayImageScale(final String imgUrl, final String smallImgUrl, final ImageView imageView, final RequestListener<Drawable> callback){
         if(!TextUtils.isEmpty(imgUrl)){
             RequestOptions options = new RequestOptions()
-//                    .centerCrop()
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .error(R.mipmap.ic_launcher)
                     .priority(Priority.NORMAL);
 
             RequestBuilder<Drawable> thumbnailRequest = Glide
@@ -265,6 +197,24 @@ public class JImageShowUtil {
 
             Glide.with(JApp.getIns())
                     .load(imgUrl)
+                    .apply(options)
+                    .thumbnail(thumbnailRequest)
+                    .listener(callback)
+                    .into(imageView);
+        }
+    }
+
+    public static void displayImageScale(final int imgResource, final String smallImgUrl, final ImageView imageView, final RequestListener<Drawable> callback){
+        if(imgResource != 0){
+            RequestOptions options = new RequestOptions()
+                    .priority(Priority.NORMAL);
+
+            RequestBuilder<Drawable> thumbnailRequest = Glide
+                    .with(JApp.getIns())
+                    .load(smallImgUrl);
+
+            Glide.with(JApp.getIns())
+                    .load(imgResource)
                     .apply(options)
                     .thumbnail(thumbnailRequest)
                     .listener(callback)

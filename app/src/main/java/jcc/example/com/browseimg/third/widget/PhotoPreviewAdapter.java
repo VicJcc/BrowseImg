@@ -1,6 +1,7 @@
 package jcc.example.com.browseimg.third.widget;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,23 +47,15 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
 //        }
         String path = photoInfo.getPhotoPath();
         if(path.startsWith("http")) {
-//            JImageShowUtil.displayImage(TLUrlManager.getSmallestImgUrl(path), holder.mIvSmall, true);
-//            JImageShowUtil.displayImageScale(path, TLUrlManager.getSmallestImgUrl(path), holder.mImageView, new RequestListener<Drawable>() {
-//                @Override
-//                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                    holder.mIvSmall.setVisibility(View.GONE);
-//                    return false;
-//                }
-//            });
-
-            JImageShowUtil.displayImageScale(path, path, holder.mImageView, null);
+            JImageShowUtil.displayImageScale(path, "", holder.mImageView, null);
         }else{
-            JImageShowUtil.displayImage(path, holder.mImageView, true);
+            int source = 0;
+            try{
+                source = Integer.valueOf(path);
+                JImageShowUtil.displayImageScale(source, "", holder.mImageView, null);
+            }catch (NumberFormatException e){
+                JImageShowUtil.displayImage(path, holder.mImageView, true);
+            }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +69,25 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
             public void onPhotoTap(View view, float x, float y) {
                 if(mCallback != null){
                     mCallback.onPhotoClick();
+                }
+            }
+        });
+
+        holder.mImageView.setOnViewDragListener(new PhotoViewAttacher.OnViewDragListener() {
+            @Override
+            public void onViewDrag(float x, float y) {
+                Log.i("JccTest", x + " " + y + "  " + holder.mImageView.getScale());
+                if(null != mCallback
+                        &&holder.mImageView.getScale() <= 1.01f){
+                    mCallback.onDrag(x, y);
+                }
+            }
+
+            @Override
+            public void onDragFinish() {
+                Log.i("JccTest", "onDragFinish");
+                if(null != mCallback){
+                    mCallback.onDragFinish();
                 }
             }
         });
@@ -93,5 +105,7 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
 
     public interface PhotoCallback{
         void onPhotoClick();
+        void onDrag(float x, float y);
+        void onDragFinish();
     }
 }

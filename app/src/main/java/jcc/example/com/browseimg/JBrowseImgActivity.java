@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +27,7 @@ import jcc.example.com.browseimg.third.widget.PhotoPreviewAdapter;
 import jcc.example.com.browseimg.util.JAnimationUtil;
 import jcc.example.com.browseimg.util.JBitmapUtils;
 import jcc.example.com.browseimg.util.JStringUtils;
+import jcc.example.com.browseimg.util.JWindowUtil;
 
 /**
  * Created by jincancan on 2017/9/29.
@@ -171,6 +173,24 @@ public class JBrowseImgActivity extends AppCompatActivity implements
 //        mActivity.finish();
     }
 
+    @Override
+    public void onDrag(float x, float y) {
+        startDrag(x, y);
+    }
+
+    @Override
+    public void onDragFinish() {
+        if(mViewPager.getScaleX() > 0.7f) {
+            mViewPager.setTranslationX(0);
+            mViewPager.setTranslationY(0);
+            mViewPager.setScaleX(1);
+            mViewPager.setScaleY(1);
+            mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(1)));
+        }else{
+            startExitAnim();
+        }
+    }
+
     public void startExitAnim(){
         mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(0)));
         JAnimationUtil.startExitViewScaleAnim(mViewPager, JBitmapUtils.getCurrentPicOriginalScale(mActivity, mInfos.get(mCurrentIndex)), mInfos.get(mCurrentIndex), new Animator.AnimatorListener() {
@@ -221,5 +241,21 @@ public class JBrowseImgActivity extends AppCompatActivity implements
             }
         });
         JAnimationUtil.startEnterViewAlphaAnim(mRlRoot, JBitmapUtils.getCurrentPicOriginalScale(mActivity, mInfos.get(mCurrentIndex)));
+    }
+
+    private void startDrag(float x, float y){
+        mViewPager.setTranslationX(x);
+        mViewPager.setTranslationY(y);
+        if(y > 0){
+            mViewPager.setPivotX(JWindowUtil.getWindowWidth(this) / 2);
+            mViewPager.setPivotY(JWindowUtil.getWindowHeight(this) / 2);
+            float scale = Math.abs(y) / JWindowUtil.getWindowHeight(this);
+            if(scale < 1 && scale > 0) {
+                mViewPager.setScaleX(1-scale);
+                mViewPager.setScaleY(1-scale);
+                mRlRoot.setBackgroundColor(Color.parseColor(JStringUtils.getBlackAlphaBg(1-scale)));
+            }
+        }
+        Log.i("TTTT", x + "   " + y);
     }
 }

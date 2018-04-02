@@ -22,6 +22,7 @@ import android.graphics.Matrix;
 import android.graphics.Matrix.ScaleToFit;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -128,6 +129,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private OnViewTapListener mViewTapListener;
     private OnLongClickListener mLongClickListener;
     private OnScaleChangeListener mScaleChangeListener;
+    private OnViewDragListener mViewDragListener;
 
     private int mIvTop, mIvRight, mIvBottom, mIvLeft;
     private FlingRunnable mCurrentFlingRunnable;
@@ -170,6 +172,42 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                             mLongClickListener.onLongClick(getImageView());
                         }
                     }
+
+                    @Override
+                    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                        Log.i("PhotoViewTest",
+                                "onScroll  "
+                                        + e1.getAction() + "     "
+                                        + e1.getRawX() + "    "
+                                        + e1.getRawY() + "    "
+                                        + e2.getAction() + "     "
+                                        + e2.getRawX() + "    "
+                                        + e2.getRawY() + "    "
+                        );
+
+                        if(null != mViewDragListener){
+                            mViewDragListener.onViewDrag(e2.getRawX() - e1.getRawX(),
+                                    e2.getRawY() - e1.getRawY());
+                        }
+
+                        return super.onScroll(e1, e2, distanceX, distanceY);
+                    }
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        Log.i("PhotoViewTest",
+                                "onFling  "
+                                        + e1.getAction() + "     "
+                                        + e1.getRawX() + "    "
+                                        + e1.getRawY() + "    "
+                                        + e2.getAction() + "     "
+                                        + e2.getRawX() + "    "
+                                        + e2.getRawY() + "    "
+                                        + velocityX + "    "
+                                        + velocityY + "    "
+                        );
+                        return super.onFling(e1, e2, velocityX, velocityY);
+                    }
                 });
 
         mGestureDetector.setOnDoubleTapListener(new DefaultOnDoubleTapListener(this));
@@ -190,6 +228,16 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     @Override
     public void setOnScaleChangeListener(OnScaleChangeListener onScaleChangeListener) {
         this.mScaleChangeListener = onScaleChangeListener;
+    }
+
+    @Override
+    public void setOnViewDragListener(OnViewDragListener onViewDragListener) {
+        this.mViewDragListener = onViewDragListener;
+    }
+
+    @Override
+    public boolean isScaling() {
+        return mScaleDragDetector.isScaling();
     }
 
     @Override
@@ -233,6 +281,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         mMatrixChangeListener = null;
         mPhotoTapListener = null;
         mViewTapListener = null;
+        mViewDragListener = null;
 
         // Finally, clear ImageView
         mImageView = null;
@@ -464,6 +513,11 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                             handled = true;
                         }
                     }
+
+                    if(null != mViewDragListener){
+                        mViewDragListener.onDragFinish();
+                    }
+
                     break;
             }
 
@@ -969,6 +1023,26 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
          * @param y    - where the user tapped from the top of the View.
          */
         void onViewTap(View view, float x, float y);
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when the ImageView is tapped with a single
+     * drag.
+     *
+     * @author Vic King
+     */
+    public static interface OnViewDragListener {
+
+        /**
+         * A callback to receive where the user taps on a ImageView. You will receive a callback if
+         * the user taps anywhere on the view, dragging on 'whitespace' will not be ignored.
+         *
+         * @param x    - where the user dragged from the left of the View.
+         * @param y    - where the user dragged from the top of the View.
+         */
+        void onViewDrag(float x, float y);
+
+        void onDragFinish();
     }
 
     private class AnimatedZoomRunnable implements Runnable {

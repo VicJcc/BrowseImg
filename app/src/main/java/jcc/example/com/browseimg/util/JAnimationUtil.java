@@ -45,18 +45,21 @@ public class JAnimationUtil {
         target.setPivotY(pivotY);
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(target, View.SCALE_X,
-                1,
+                target.getScaleX(),
                 originalScale);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(target, View.SCALE_Y,
-                1,
+                target.getScaleY(),
                 originalScale);
-
         ObjectAnimator animatorTransX = ObjectAnimator.ofFloat(target, View.TRANSLATION_X,
-                0f,
-                0f);
+                target.getTranslationX() +
+                        (JWindowUtil.getWindowWidth(JApp.getIns()) / 2 * (1 - target.getScaleX()) -
+                                target.getPivotX() * (1 - target.getScaleX())),
+                0);
         ObjectAnimator animatorTransY = ObjectAnimator.ofFloat(target, View.TRANSLATION_Y,
-                0f,
-                0f);
+                target.getTranslationY() +
+                        (JWindowUtil.getWindowHeight(JApp.getIns()) / 2 * (1 - target.getScaleY()) -
+                                target.getPivotY() * (1 - target.getScaleY())),
+                0);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX, animatorY, animatorTransX, animatorTransY);
