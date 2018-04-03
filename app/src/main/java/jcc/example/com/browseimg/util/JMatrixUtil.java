@@ -10,7 +10,9 @@ import android.widget.ImageView;
 public class JMatrixUtil {
 
     public static Rect getDrawableBoundsInView(ImageView iv) {
-        if (iv == null || iv.getDrawable() == null) return null;
+        if (iv == null || iv.getDrawable() == null) {
+            return null;
+        }
         Drawable d = iv.getDrawable();
         Rect result = new Rect();
         iv.getGlobalVisibleRect(result);

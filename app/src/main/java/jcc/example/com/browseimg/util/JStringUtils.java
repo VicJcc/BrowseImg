@@ -1,7 +1,7 @@
 package jcc.example.com.browseimg.util;
 
 /**
- * Created by taole on 15/5/6.
+ * Created by JCC
  */
 public class JStringUtils {
 

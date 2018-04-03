@@ -17,6 +17,8 @@ import jcc.example.com.browseimg.beans.JPhotosInfos;
 
 public class JAnimationUtil {
 
+    private static final long ANIM_TIME = 300;
+
     public static void startExitViewScaleAnim(View target, float originalScale, JPhotosInfos infos, Animator.AnimatorListener animatorListener){
 
         float pivotX;
@@ -63,7 +65,7 @@ public class JAnimationUtil {
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX, animatorY, animatorTransX, animatorTransY);
-        set.setDuration(3000);
+        set.setDuration(ANIM_TIME);
         set.start();
 
         set.addListener(animatorListener);
@@ -106,14 +108,14 @@ public class JAnimationUtil {
                 1.0f);
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX, animatorY);
-        set.setDuration(3000);
+        set.setDuration(ANIM_TIME);
         set.start();
         set.addListener(animatorListener);
     }
 
     public static void startEnterViewAlphaAnim(final View target, float originalScale){
         ValueAnimator valueAnimator = new ValueAnimator();
-        valueAnimator.setDuration(3000);
+        valueAnimator.setDuration(ANIM_TIME);
         valueAnimator.setFloatValues(originalScale, 1f);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

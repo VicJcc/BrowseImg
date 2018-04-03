@@ -14,6 +14,12 @@ public class JBitmapUtils {
         return width * 1.0f / height;
     }
 
+    /**
+     * 计算小图与全屏大图时候的缩放度，用于起始动画
+     * @param context
+     * @param infos
+     * @return
+     */
     public static float getCurrentPicOriginalScale(Context context, JPhotosInfos infos){
 
         float mScale;

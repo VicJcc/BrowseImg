@@ -78,7 +78,7 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
             public void onViewDrag(float x, float y) {
                 Log.i("JccTest", x + " " + y + "  " + holder.mImageView.getScale());
                 if(null != mCallback
-                        &&holder.mImageView.getScale() <= 1.01f){
+                        &&holder.mImageView.getScale() <= 1.01f && Math.abs(y) > 30){
                     mCallback.onDrag(x, y);
                 }
             }
