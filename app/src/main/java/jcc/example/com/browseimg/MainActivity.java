@@ -24,10 +24,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mIvTest3;
 
     private String[] mPaths = new String[]{
-            "http://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521111466196&di=4abfe93a8d72938931f49728c9794824&imgtype=0&src=http%3A%2F%2Fimg001.21cnimg.com%2Fphotos%2Falbum%2F20150911%2Fm600%2F8E9813CB8FCF58BB33A452B3912B3149.jpg",
-            "http://img.zcool.cn/community/018d4e554967920000019ae9df1533.jpg@900w_1l_2o_100sh.jpg",
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1521117438294&di=92e228dd7303a470e3edc8cedb6329b5&imgtype=0&src=http%3A%2F%2Fattimg.dospy.com%2Fimg%2Fday_150423%2F20150423_7ef133d562957e27be33aOLlEAEC31RM.jpg",
-            "http://img.zcool.cn/community/0142135541fe180000019ae9b8cf86.jpg@1280w_1l_2o_100sh.png"
+            "http://img.hb.aicdn.com/f22df3bca217f7435b6b7d3c66bc6d21d72b60c3a70eb-yctL70_fw658",
+            "http://img.hb.aicdn.com/266e4c85ef38c4ef468dd28cc5ae9deba47080867d89-urhOsD_fw658",
+            "http://img.hb.aicdn.com/652b269af2818f6f1c468399e00152d73d0a7beb29d1e-2vnLBW_fw658",
+            "http://img.hb.aicdn.com/b8ce046106dc17ebb3782351f2a493b52daf149611f57-YkEgOp_fw658"
     };
 
     @Override
